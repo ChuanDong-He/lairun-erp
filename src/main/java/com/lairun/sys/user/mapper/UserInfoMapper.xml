@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lairun.sys.user.mapper.UserInfoMapper">
+
+    <resultMap id="UserInfo" type="com.lairun.sys.user.domain.UserInfo">
+        <collection property="roles" ofType="string" select="queryUserRole" column="{userId = userId}"/>
+    </resultMap>
+
+    <select id="queryUserInfoByUserId" resultMap="UserInfo">
+        select user_id          "userId",
+               user_name        "userName",
+               phone_number     "phoneNumber",
+               telephone_number "telephoneNumber",
+               fax_number       "faxNumber",
+               email,
+               password,
+               status,
+               created_date     "createdDate",
+               updated_date     "updatedDate",
+               created_user     "createdUser"
+        from sys_user_info
+        where user_id = #{userId}
+    </select>
+
+    <select id="queryUserRole" resultType="string">
+        select role_id
+        from sys_user_role_rel
+        where user_id = #{userId}
+    </select>
+
+    <select id="queryUserInfos" resultType="com.lairun.sys.user.domain.UserInfoDetail">
+        select sui.user_id          "userId",
+               sui.user_name        "userName",
+               sui.phone_number     "phoneNumber",
+               sui.telephone_number "telephoneNumber",
+               sui.fax_number       "faxNumber",
+               sui.email,
+               sri.role_name        "roleName"
+        from sys_user_info sui
+                 left join sys_user_role_rel surr on sui.user_id = surr.user_id
+                 left join sys_role_info sri on surr.role_id = sri.role_id
+    </select>
+
+</mapper>

@@ -1,0 +1,31 @@
+server:
+  port: 80
+  servlet:
+    session:
+      timeout: 86400
+
+spring:
+  datasource:
+    tomcat:
+      min-evictable-idle-time-millis: 1800000
+      num-tests-per-eviction-run: 3
+      validation-query: select 1
+      test-on-borrow: true
+      test-while-idle: true
+      test-on-return: true
+    url: jdbc:mysql://127.0.0.1:3306/db_erp?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: wyt1027#S
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
+logging:
+  level:
+    com: debug
+#    org: debug
+
+mybatis:
+  mapper-locations: classpath*:com/lairun/**/mapper/*.xml
