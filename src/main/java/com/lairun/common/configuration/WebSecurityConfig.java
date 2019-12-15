@@ -1,8 +1,8 @@
 package com.lairun.common.configuration;
 
 import com.alibaba.fastjson.JSONObject;
-import com.lairun.common.utils.ResponseResultUtil;
-import com.lairun.sys.user.domain.UserInfo;
+import com.lairun.common.utils.ResultUtil;
+import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,10 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	}
 
-	@Override
+	/*@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/**");
-	}
+	}*/
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -86,8 +86,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				Authentication authentication) throws IOException, ServletException {
 			response.setContentType("application/json;charset=utf-8");
 			PrintWriter out = response.getWriter();
-			UserInfo userInfo = (UserInfo) authentication.getPrincipal();
-			out.write(JSONObject.toJSONString(ResponseResultUtil.success(userInfo.compareToUserInfoDetail())));
+			UserInfoDetail userInfoDetail = (UserInfoDetail) authentication.getPrincipal();
+			out.write(JSONObject.toJSONString(ResultUtil.success(userInfoDetail.compareToUserInfo())));
 			out.flush();
 			out.close();
 		}
@@ -99,7 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				AuthenticationException exception) throws IOException, ServletException {
 			response.setContentType("application/json;charset=utf-8");
 			PrintWriter out = response.getWriter();
-			out.write(JSONObject.toJSONString(ResponseResultUtil.failure("用户名或密码错误")));
+			out.write(JSONObject.toJSONString(ResultUtil.failure("用户名或密码错误")));
 			out.flush();
 			out.close();
 		}

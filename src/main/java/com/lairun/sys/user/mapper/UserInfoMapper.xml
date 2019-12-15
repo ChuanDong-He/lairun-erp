@@ -2,33 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lairun.sys.user.mapper.UserInfoMapper">
 
-    <resultMap id="UserInfo" type="com.lairun.sys.user.domain.UserInfo">
-        <collection property="roles" ofType="string" select="queryUserRole" column="{userId = userId}"/>
-    </resultMap>
+    <insert id="addUserInfo" parameterType="object">
+        insert into sys_user_info(user_id, user_name, password, phone_number, telephone_number, fax_number, email,
+                                  status, dept_id, created_user, updated_user)
+        values (#{userInfo.userId}, #{userInfo.userName}, #{userInfo.password}, #{userInfo.phoneNumber},
+                #{userInfo.telephoneNumber}, #{userInfo.faxNumber}, #{userInfo.email}, '10A', '', #{creator},
+                #{creator});
+        insert into sys_user_role_rel(user_id, role_id) values (#{userInfo.userId}, #{userInfo.roleId});
+    </insert>
 
-    <select id="queryUserInfoByUserId" resultMap="UserInfo">
-        select user_id          "userId",
-               user_name        "userName",
-               phone_number     "phoneNumber",
-               telephone_number "telephoneNumber",
-               fax_number       "faxNumber",
-               email,
-               password,
-               status,
-               created_date     "createdDate",
-               updated_date     "updatedDate",
-               created_user     "createdUser"
-        from sys_user_info
+    <update id="editUserInfo">
+        update sys_user_info
+        set user_name        = #{userInfo.useName},
+            phone_number     = #{userInfo.phoneNumber},
+            telephone_number = #{userInfo.telephoneNumber},
+            fax_number       = #{userInfo.faxNumber},
+            email            = #{userInfo.email},
+            updated_user     = #{updatedUser}
+        where user_id = #{userInfo.userId};
+        delete from sys_user_role_rel where user_id = #{userInfo.userId};
+        insert into sys_user_role_rel(user_id, role_id) values (#{userInfo.userId}, #{userInfo.roleId});
+    </update>
+
+    <update id="deleteUserInfo">
+        update sys_user_info
+        set status = '10D'
         where user_id = #{userId}
+          and updated_user = #{updatedUser};
+    </update>
+
+    <select id="queryUserInfoByUserId" resultType="com.lairun.sys.user.domain.UserInfoDetail">
+        select sui.user_id          "userId",
+               sui.user_name        "userName",
+               sui.phone_number     "phoneNumber",
+               sui.telephone_number "telephoneNumber",
+               sui.fax_number       "faxNumber",
+               sui.email,
+               sui.password,
+               sui.status,
+               sui.created_date     "createdDate",
+               sui.updated_date     "updatedDate",
+               sui.created_user     "createdUser",
+               sri.role_id          "roleId",
+               sri.role_name        "roleName"
+        from sys_user_info sui
+                 left join sys_user_role_rel surr on sui.user_id = surr.user_id
+                 left join sys_role_info sri on surr.role_id = sri.role_id
+        where sui.user_id = #{userId}
     </select>
 
-    <select id="queryUserRole" resultType="string">
-        select role_id
-        from sys_user_role_rel
-        where user_id = #{userId}
-    </select>
-
-    <select id="queryUserInfos" resultType="com.lairun.sys.user.domain.UserInfoDetail">
+    <select id="queryUserInfos" resultType="com.lairun.sys.user.domain.UserInfo">
         select sui.user_id          "userId",
                sui.user_name        "userName",
                sui.phone_number     "phoneNumber",
@@ -39,6 +62,13 @@
         from sys_user_info sui
                  left join sys_user_role_rel surr on sui.user_id = surr.user_id
                  left join sys_role_info sri on surr.role_id = sri.role_id
+        where sui.status != '10D'
+        <if test="param.userId != null and param.userId != ''">
+            and sui.user_id like concat('%', #{param.userId}, '%')
+        </if>
+        <if test="param.userName != null and param.userName != ''">
+            and sui.user_name like concat('%', #{param.userName}, '%')
+        </if>
     </select>
 
 </mapper>

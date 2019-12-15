@@ -1,5 +1,7 @@
 package com.lairun.common.aop;
 
+import com.github.pagehelper.PageHelper;
+import com.lairun.common.domain.PageParam;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -13,12 +15,12 @@ import java.util.Map;
 @Component
 public class PageHelperAop {
 
-	@Before("within(com.lairun..mapper.*) && @annotation(com.lairun.common.annotation.PageHelper)")
+	@Before("@annotation(com.lairun.common.annotation.PageHelper)")
 	public void pageHelperHandle(JoinPoint joinPoint) {
 		for (Object arg : joinPoint.getArgs()) {
-			if (arg instanceof Map) {
-				/*RequestPage<?> requestPage = (RequestPage<?>) arg;
-				PageHelper.startPage(requestPage.getPageNum(), requestPage.getPageSize());*/
+			if (arg instanceof PageParam) {
+				PageParam pageParam = (PageParam) arg;
+				PageHelper.startPage(pageParam.getPageNum(), pageParam.getPageSize());
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package com.lairun.sys.user.domain;
+package com.lairun.sys.role.domain;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2019-12-13
  */
 @Data
-public class roleInfo {
+public class RoleInfo {
 
     private String roleId;
 

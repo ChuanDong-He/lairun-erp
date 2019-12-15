@@ -1,5 +1,6 @@
 package com.lairun.common.advice;
 
+import com.lairun.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,10 +18,8 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(value = {Exception.class})
     public Map<String, Object> exception(Exception exception){
-        Map<String, Object> result = new HashMap<>();
-        log.debug(exception.getMessage());
-
-        return result;
+        log.error("系统异常", exception);
+        return ResultUtil.failure();
     }
 
 }

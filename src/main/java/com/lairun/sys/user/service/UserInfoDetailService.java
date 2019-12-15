@@ -1,6 +1,6 @@
 package com.lairun.sys.user.service;
 
-import com.lairun.sys.user.domain.UserInfo;
+import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,10 +20,10 @@ public class UserInfoDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfo userInfo = userInfoMapper.queryUserInfoByUserId(username);
-        if (userInfo == null) {
+        UserInfoDetail userInfoDetail = userInfoMapper.queryUserInfoByUserId(username);
+        if (userInfoDetail == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        return userInfo;
+        return userInfoDetail;
     }
 }

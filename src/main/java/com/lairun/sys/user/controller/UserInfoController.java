@@ -1,11 +1,13 @@
 package com.lairun.sys.user.controller;
 
-import com.lairun.common.utils.ResponseResultUtil;
+import com.lairun.common.domain.PageParam;
+import com.lairun.common.utils.ResultUtil;
+import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author x_holic@outlook.com
@@ -19,8 +21,32 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
     @PostMapping("queryUserInfos")
-    public Object queryUserInfos(){
-        return ResponseResultUtil.success(userInfoService.queryUserInfos());
+    public Object queryUserInfos(@RequestBody @Valid PageParam pageParam){
+        return ResultUtil.success(userInfoService.queryUserInfos(pageParam));
+    }
+
+    @PostMapping("addUserInfo")
+    public Object addUserInfo(@RequestBody UserInfoDetail userInfoDetail){
+        userInfoService.addUserInfo(userInfoDetail);
+        return ResultUtil.success();
+    }
+
+    @PostMapping("editUserInfo")
+    public Object editUserInfo(@RequestBody UserInfoDetail userInfoDetail){
+        userInfoService.editUserInfo(userInfoDetail);
+        return ResultUtil.success();
+    }
+
+    @GetMapping("deleteUserInfo/{userId}")
+    public Object deleteUserInfo(@PathVariable() String userId){
+        userInfoService.deleteUserInfo(userId);
+        return ResultUtil.success();
+    }
+
+    @GetMapping("queryUserInfo/{userId}")
+    public Object queryUserInfo(@PathVariable() String userId){
+        userInfoService.queryUserInfo(userId);
+        return ResultUtil.success();
     }
 
 }

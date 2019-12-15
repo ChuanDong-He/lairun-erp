@@ -1,27 +1,21 @@
 package com.lairun.sys.user.domain;
 
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * @author x_holic@outlook.com
- * @date 2019-12-11
+ * @date 2019-12-12
  */
 @Data
-public class UserInfo implements UserDetails {
+public class UserInfo implements Serializable {
+
+    private static final long serialVersionUID = -8747063124430630775L;
 
     private String userId;
 
     private String userName;
-
-    private String password;
 
     private String phoneNumber;
 
@@ -31,51 +25,6 @@ public class UserInfo implements UserDetails {
 
     private String email;
 
-    private List<String> roles;
+    private String roleName;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (roles != null && !roles.isEmpty()) {
-            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            roles.forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
-            return grantedAuthorities;
-        }
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return userId;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public UserInfoDetail compareToUserInfoDetail(){
-        UserInfoDetail userInfoDetail = new UserInfoDetail();
-        BeanUtils.copyProperties(this, userInfoDetail);
-        return userInfoDetail;
-    }
 }

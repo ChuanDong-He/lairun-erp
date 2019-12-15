@@ -1,8 +1,9 @@
 package com.lairun.sys.user.service;
 
+import com.lairun.common.domain.PageBean;
+import com.lairun.common.domain.PageParam;
 import com.lairun.sys.user.domain.UserInfoDetail;
-
-import java.util.List;
+import com.lairun.sys.user.domain.UserInfo;
 
 /**
  * @author x_holic@outlook.com
@@ -10,6 +11,16 @@ import java.util.List;
  */
 public interface UserInfoService {
 
-    List<UserInfoDetail> queryUserInfos();
+    PageBean<UserInfo> queryUserInfos(PageParam pageParam);
+
+    UserInfo queryUserInfo(String userId);
+
+    void addUserInfo(UserInfoDetail userInfoDetail);
+
+    void resetUserPassword(String userId, String password);
+
+    void editUserInfo(UserInfoDetail userInfo);
+
+    void deleteUserInfo(String userId);
 
 }

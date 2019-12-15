@@ -1,30 +1,73 @@
 package com.lairun.sys.user.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author x_holic@outlook.com
- * @date 2019-12-12
+ * @date 2019-12-11
  */
-@Data
-public class UserInfoDetail implements Serializable {
+@Setter
+@Getter
+@ToString
+public class UserInfoDetail extends UserInfo implements UserDetails {
 
-    private static final long serialVersionUID = -8747063124430630775L;
+    private String roleId;
 
-    private String userId;
+    private String password;
 
-    private String userName;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (StringUtils.isNotBlank(roleId)) {
+            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + roleId));
+            return grantedAuthorities;
+        }
+        return null;
+    }
 
-    private String phoneNumber;
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-    private String telephoneNumber;
+    @Override
+    public String getUsername() {
+        return super.getUserId();
+    }
 
-    private String faxNumber;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    private String email;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    private String roleName;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public UserInfo compareToUserInfo(){
+        return this;
+    }
 }

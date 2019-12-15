@@ -9,7 +9,7 @@ import java.util.Map;
  * @author x_holic@outlook.com
  * @date 2019-12-12
  */
-public final class ResponseResultUtil {
+public final class ResultUtil {
 
     public static Map<String, Object> success(String msg, Object data) {
         return success(msg, null, data);
@@ -18,15 +18,21 @@ public final class ResponseResultUtil {
     public static Map<String, Object> success(Object data) {
         return success(null, null, data);
     }
+    public static Map<String, Object> success() {
+        return success(null, null, null);
+    }
 
     public static Map<String, Object> success(String msg, String dataName, Object data){
         Map<String, Object> result = new HashMap<>();
         result.put("code", "0000");
         result.put("msg", StringUtils.isNotBlank(msg) ? msg : "操作成功");
-        if (StringUtils.isNotBlank(dataName)) {
-            result.put(dataName, data);
-        } else {
-            result.put("data", data);
+
+        if (data != null) {
+            if (StringUtils.isNotBlank(dataName)) {
+                result.put(dataName, data);
+            } else {
+                result.put("data", data);
+            }
         }
         return result;
     }

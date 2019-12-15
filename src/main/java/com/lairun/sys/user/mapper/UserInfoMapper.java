@@ -1,7 +1,9 @@
 package com.lairun.sys.user.mapper;
 
-import com.lairun.sys.user.domain.UserInfo;
+import com.lairun.common.annotation.PageHelper;
+import com.lairun.common.domain.PageParam;
 import com.lairun.sys.user.domain.UserInfoDetail;
+import com.lairun.sys.user.domain.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,8 +14,15 @@ import java.util.List;
  */
 public interface UserInfoMapper {
 
-    UserInfo queryUserInfoByUserId(@Param("userId") String userId);
+    UserInfoDetail queryUserInfoByUserId(@Param("userId") String userId);
 
-    List<UserInfoDetail> queryUserInfos();
+    @PageHelper
+    List<UserInfo> queryUserInfos(PageParam pageParam);
+
+    int addUserInfo(@Param("userInfo") UserInfoDetail userInfo, @Param("creator") String creator);
+
+    int editUserInfo(@Param("userInfo") UserInfoDetail userInfo, @Param("updatedUser") String updatedUser);
+
+    int deleteUserInfo(@Param("userId") String userId, @Param("updatedUser") String updatedUser);
 
 }
