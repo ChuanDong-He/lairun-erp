@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public final class ResultUtil {
 
+    private ResultUtil() {}
+
     public static Map<String, Object> success(String msg, Object data) {
         return success(msg, null, data);
     }

@@ -1,8 +1,10 @@
 package com.lairun.sys.user.domain;
 
+import com.lairun.sys.role.domain.RoleInfo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author x_holic@outlook.com
@@ -25,6 +27,6 @@ public class UserInfo implements Serializable {
 
     private String email;
 
-    private String roleName;
+    private List<RoleInfo> roles;
 
 }

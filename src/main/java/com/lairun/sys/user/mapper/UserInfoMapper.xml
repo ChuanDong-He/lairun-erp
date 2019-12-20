@@ -31,7 +31,11 @@
           and updated_user = #{updatedUser};
     </update>
 
-    <select id="queryUserInfoByUserId" resultType="com.lairun.sys.user.domain.UserInfoDetail">
+    <resultMap id="UserInfoDetail" type="com.lairun.sys.user.domain.UserInfoDetail" extends="UserInfo">
+        <result column="password" property="password" />
+    </resultMap>
+
+    <select id="queryUserInfoByUserId" resultMap="UserInfoDetail">
         select sui.user_id          "userId",
                sui.user_name        "userName",
                sui.phone_number     "phoneNumber",
@@ -44,21 +48,38 @@
                sui.updated_date     "updatedDate",
                sui.created_user     "createdUser",
                sri.role_id          "roleId",
-               sri.role_name        "roleName"
+               sri.role_name        "roleName",
+               sri.role_desc        "roleDesc"
         from sys_user_info sui
                  left join sys_user_role_rel surr on sui.user_id = surr.user_id
                  left join sys_role_info sri on surr.role_id = sri.role_id
         where sui.user_id = #{userId}
     </select>
 
-    <select id="queryUserInfos" resultType="com.lairun.sys.user.domain.UserInfo">
+    <resultMap id="UserInfo" type="com.lairun.sys.user.domain.UserInfo">
+        <result property="userId" column="userId"/>
+        <result property="userName" column="userName"/>
+        <result property="phoneNumber" column="phoneNumber"/>
+        <result property="telephoneNumber" column="telephoneNumber"/>
+        <result property="faxNumber" column="faxNumber"/>
+        <result property="email" column="email"/>
+        <collection property="roles" ofType="com.lairun.sys.role.domain.RoleInfo">
+            <result property="roleId" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+            <result property="roleDesc"  column="roleDesc"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryUserInfos" resultMap="UserInfo">
         select sui.user_id          "userId",
                sui.user_name        "userName",
                sui.phone_number     "phoneNumber",
                sui.telephone_number "telephoneNumber",
                sui.fax_number       "faxNumber",
                sui.email,
-               sri.role_name        "roleName"
+               sri.role_id          "roleId",
+               sri.role_name        "roleName",
+               sri.role_desc        "roleDesc"
         from sys_user_info sui
                  left join sys_user_role_rel surr on sui.user_id = surr.user_id
                  left join sys_role_info sri on surr.role_id = sri.role_id

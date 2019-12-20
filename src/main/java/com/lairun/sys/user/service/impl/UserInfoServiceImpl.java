@@ -56,4 +56,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     public void deleteUserInfo(String userId) {
         userInfoMapper.deleteUserInfo(userId, "admin");
     }
+
+    @Override
+    public boolean checkUserIdExist(String userId) {
+        return userInfoMapper.queryUserInfoByUserId(userId) != null;
+    }
 }

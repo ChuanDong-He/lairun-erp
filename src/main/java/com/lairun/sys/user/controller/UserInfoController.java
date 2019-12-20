@@ -45,8 +45,12 @@ public class UserInfoController {
 
     @GetMapping("queryUserInfo/{userId}")
     public Object queryUserInfo(@PathVariable() String userId){
-        userInfoService.queryUserInfo(userId);
-        return ResultUtil.success();
+        return ResultUtil.success(userInfoService.queryUserInfo(userId));
+    }
+
+    @GetMapping("checkUserIdExist/{userId}")
+    public Object checkUserIdExist(@PathVariable() String userId){
+        return ResultUtil.success(userInfoService.checkUserIdExist(userId));
     }
 
 }
