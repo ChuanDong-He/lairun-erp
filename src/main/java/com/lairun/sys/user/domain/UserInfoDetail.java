@@ -3,6 +3,7 @@ package com.lairun.sys.user.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,6 +67,8 @@ public class UserInfoDetail extends UserInfo implements UserDetails {
 	}
 
 	public UserInfo compareToUserInfo() {
-		return this;
+		UserInfo userInfo = new UserInfo();
+		BeanUtils.copyProperties(this, userInfo);
+		return userInfo;
 	}
 }

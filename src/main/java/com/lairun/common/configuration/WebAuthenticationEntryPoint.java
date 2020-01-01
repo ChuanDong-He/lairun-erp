@@ -22,7 +22,7 @@ public class WebAuthenticationEntryPoint implements AuthenticationEntryPoint {
 			AuthenticationException authException) throws IOException, ServletException {
 		HashMap<String, String> map = new HashMap<>(2);
 		map.put("uri", request.getRequestURI());
-		map.put("msg", "认证失败");
+		map.put("msg", authException.getMessage());
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setCharacterEncoding("utf-8");
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
