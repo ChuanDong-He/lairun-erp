@@ -6,14 +6,17 @@ import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -22,12 +25,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 /**
  * @author x_holic@outlook.com
  * @date 2019-12-11
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -35,19 +39,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		/*http.authorizeRequests().anyRequest().authenticated().and().formLogin()
+		http.authorizeRequests().anyRequest().authenticated().and().formLogin()
 				.successHandler(new LoginSuccessHandler()).failureHandler(new LoginFailureHandler()).permitAll().and()
 				.httpBasic().and().exceptionHandling().accessDeniedHandler(new WebAccessDeniedHandler())
-				.authenticationEntryPoint(new WebAuthenticationEntryPoint()).and().authorizeRequests()
-				.antMatchers("/userInfo/queryUserInfos").access("NORMAL");*/
-		http.formLogin()
-				.successHandler(new LoginSuccessHandler()).failureHandler(new LoginFailureHandler()).permitAll().and()
-				.httpBasic().and().exceptionHandling().accessDeniedHandler(new WebAccessDeniedHandler())
-				.authenticationEntryPoint(new WebAuthenticationEntryPoint())
-				.and().authorizeRequests()
-				.antMatchers("/userInfo/queryUserInfos").access("hasRole('NORMAL')");
+				.authenticationEntryPoint(new WebAuthenticationEntryPoint());
+		//http.authorizeRequests().accessDecisionManager(accessDecisionManager());
 		http.csrf().disable();
 
+	}
+
+	public AccessDecisionManager accessDecisionManager() {
+		return new UnanimousBased(Arrays.asList(new WebExpressionVoter(), new RoleBaseVoter(), new AuthenticatedVoter()));
 	}
 
 	/*

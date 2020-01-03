@@ -26,6 +26,7 @@ logging:
   level:
     com: debug
 #    org: debug
+    web: debug
 
 mybatis:
   mapper-locations: classpath*:com/lairun/**/mapper/*.xml

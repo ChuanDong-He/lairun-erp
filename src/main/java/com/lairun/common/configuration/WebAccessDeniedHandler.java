@@ -24,8 +24,8 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
 		map.put("uri", request.getRequestURI());
 		map.put("msg", accessDeniedException.getMessage());
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		//response.setCharacterEncoding("utf-8");
-		//response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding("utf-8");
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		ObjectMapper objectMapper = new ObjectMapper();
 		String resBody = objectMapper.writeValueAsString(map);
 		PrintWriter printWriter = response.getWriter();
