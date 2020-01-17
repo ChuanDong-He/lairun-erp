@@ -20,9 +20,9 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		HashMap<String, String> map = new HashMap<>();
-		map.put("uri", request.getRequestURI());
-		map.put("msg", accessDeniedException.getMessage());
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("code", 403);
+		map.put("msg", "未授权");
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		response.setCharacterEncoding("utf-8");
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
