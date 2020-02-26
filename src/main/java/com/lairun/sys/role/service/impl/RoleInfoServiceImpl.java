@@ -3,7 +3,9 @@ package com.lairun.sys.role.service.impl;
 import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
 import com.lairun.sys.role.domain.RoleInfo;
+import com.lairun.sys.role.mapper.RoleInfoMapper;
 import com.lairun.sys.role.service.RoleInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,9 +14,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RoleInfoServiceImpl implements RoleInfoService {
+
+    @Autowired
+    private RoleInfoMapper roleInfoMapper;
+
     @Override
     public PageBean<RoleInfo> queryRoleInfos(PageParam pageParam) {
-        return null;
+        return new PageBean<>(roleInfoMapper.queryRoleInfos(pageParam));
     }
 
     @Override

@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lairun.sys.role.mapper.RoleInfoMapper">
 
+    <select id="queryRoleInfos" resultType="com.lairun.sys.role.domain.RoleInfo">
+        select sri.role_id "roleId", sri.role_name "roleName", sri.role_desc "roleDesc"
+        from sys_role_info sri
+        where sri.status = '10A'
+    </select>
+
 </mapper>

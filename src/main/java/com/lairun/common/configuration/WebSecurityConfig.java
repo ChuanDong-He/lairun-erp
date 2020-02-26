@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			}
 		});
 		http.csrf().disable();
+		//http.authorizeRequests().withObjectPostProcessor()
 
 	}
 
@@ -63,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userInfoDetailService);
+
 	}
 
 	@Bean
