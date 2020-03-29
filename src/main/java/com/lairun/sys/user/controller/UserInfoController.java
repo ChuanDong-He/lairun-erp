@@ -22,6 +22,7 @@ public class UserInfoController {
 
     @PostMapping("queryUserInfos")
     public Object queryUserInfos(@RequestBody @Valid PageParam pageParam){
+        int i = 1/0;
         return ResultUtil.success(userInfoService.queryUserInfos(pageParam));
     }
 
