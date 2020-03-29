@@ -20,8 +20,8 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> exception(Exception exception){
-        log.error("系统异常", exception);
+    public Map<String, Object> exception(Exception e){
+        log.error("系统异常", e);
         return ResultUtil.failure();
     }
 
