@@ -27,7 +27,7 @@
     <update id="deleteUserInfo">
         update sys_user_info
         set status = '10D'
-        where user_id = #{userId}
+        where user_id in <foreach open="(" close=")" separator="," item="userId" collection="userIds" > #{userId} </foreach>
           and updated_user = #{updatedUser};
     </update>
 

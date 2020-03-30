@@ -53,7 +53,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void deleteUserInfo(String userId) {
+    public void deleteUserInfo(String ...userId) {
         userInfoMapper.deleteUserInfo(userId, "admin");
     }
 

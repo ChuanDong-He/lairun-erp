@@ -5,14 +5,17 @@ import com.lairun.common.utils.ResultUtil;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 /**
  * @author x_holic@outlook.com
  * @date 2019-12-11
  */
+@Validated
 @RestController
 @RequestMapping("userInfo")
 public class UserInfoController {
@@ -38,9 +41,9 @@ public class UserInfoController {
         return ResultUtil.success();
     }
 
-    @GetMapping("deleteUserInfo/{userId}")
-    public Object deleteUserInfo(@PathVariable() String userId){
-        userInfoService.deleteUserInfo(userId);
+    @PostMapping("deleteUserInfo")
+    public Object deleteUserInfo(@RequestBody @Valid @Size(min = 1, message = "参数错误") String[] userIds){
+        userInfoService.deleteUserInfo(userIds);
         return ResultUtil.success();
     }
 

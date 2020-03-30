@@ -21,7 +21,7 @@ public interface UserInfoService {
 
     void editUserInfo(UserInfoDetail userInfo);
 
-    void deleteUserInfo(String userId);
+    void deleteUserInfo(String ...userId);
 
     boolean checkUserIdExist(String userId);
 
