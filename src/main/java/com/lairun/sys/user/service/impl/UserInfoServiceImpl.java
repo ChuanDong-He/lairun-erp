@@ -53,8 +53,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void deleteUserInfo(String ...userId) {
-        userInfoMapper.deleteUserInfo(userId, "admin");
+    public void deleteUserInfo(String ...userIds) {
+        userInfoMapper.deleteUserInfo(userIds, "admin");
     }
 
     @Override
