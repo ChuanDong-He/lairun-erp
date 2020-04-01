@@ -2,7 +2,6 @@ package com.lairun.common.configuration;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lairun.common.utils.ResultUtil;
-import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated().and().formLogin()
+		http.authorizeRequests().anyRequest().authenticated().and().formLogin().usernameParameter("userName")
 				.successHandler(new LoginSuccessHandler()).failureHandler(new LoginFailureHandler()).permitAll().and()
 				.httpBasic().and().exceptionHandling().accessDeniedHandler(new WebAccessDeniedHandler())
 				.authenticationEntryPoint(new WebAuthenticationEntryPoint());
@@ -101,8 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				Authentication authentication) throws IOException, ServletException {
 			response.setContentType("application/json;charset=utf-8");
 			PrintWriter out = response.getWriter();
-			UserInfoDetail userInfoDetail = (UserInfoDetail) authentication.getPrincipal();
-			out.write(JSONObject.toJSONString(ResultUtil.success(userInfoDetail.compareToUserInfo())));
+			out.write(JSONObject.toJSONString(ResultUtil.success("登录成功", null)));
 			out.flush();
 			out.close();
 		}
@@ -113,8 +111,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 				AuthenticationException exception) throws IOException, ServletException {
 			response.setContentType("application/json;charset=utf-8");
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			PrintWriter out = response.getWriter();
-			out.write(JSONObject.toJSONString(ResultUtil.failure("用户名或密码错误")));
+			out.write(JSONObject.toJSONString(ResultUtil.failure("401", "用户名或密码错误")));
 			out.flush();
 			out.close();
 		}

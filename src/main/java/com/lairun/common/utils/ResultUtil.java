@@ -2,7 +2,7 @@ package com.lairun.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -25,8 +25,8 @@ public final class ResultUtil {
     }
 
     public static Map<String, Object> success(String msg, String dataName, Object data){
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", "0000");
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("code", "200");
         result.put("msg", StringUtils.isNotBlank(msg) ? msg : "操作成功");
 
         if (data != null) {
@@ -48,8 +48,8 @@ public final class ResultUtil {
     }
 
     public static Map<String, Object> failure(String code, String msg) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", StringUtils.isNotBlank(code) ? code : "5000");
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("code", StringUtils.isNotBlank(code) ? code : "500");
         result.put("msg", StringUtils.isNotBlank(msg) ? msg : "操作失败，请联系管理员");
         return result;
     }

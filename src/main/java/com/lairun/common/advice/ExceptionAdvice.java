@@ -1,11 +1,14 @@
 package com.lairun.common.advice;
 
+import com.lairun.common.advice.exception.UserNotLoginException;
 import com.lairun.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -30,6 +33,24 @@ public class ExceptionAdvice {
 					.forEach(constraintViolation -> msg.add(constraintViolation.getMessage()));
 		}
 		return ResultUtil.failure("406", String.join(",", msg));
+	}
+
+	@ExceptionHandler(value = { NoHandlerFoundException.class })
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public Map<String, Object> notFoundException() {
+		return ResultUtil.failure("404", "请求不存在");
+	}
+
+	@ExceptionHandler(value = { HttpMediaTypeNotSupportedException.class })
+	@ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+	public Map<String, Object> httpMediaTypeNotSupportedException() {
+		return ResultUtil.failure("415", "Unsupported Media Type");
+	}
+
+	@ExceptionHandler(value = { UserNotLoginException.class })
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	public Map<String, Object> userNotLoginException() {
+		return ResultUtil.failure("401", "用户未登录");
 	}
 
 	@ExceptionHandler(value = { Exception.class })

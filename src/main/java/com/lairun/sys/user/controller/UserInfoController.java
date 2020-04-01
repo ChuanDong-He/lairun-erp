@@ -2,6 +2,7 @@ package com.lairun.sys.user.controller;
 
 import com.lairun.common.domain.PageParam;
 import com.lairun.common.utils.ResultUtil;
+import com.lairun.common.utils.UserHolder;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,11 @@ public class UserInfoController {
     @GetMapping("checkUserIdExist/{userId}")
     public Object checkUserIdExist(@PathVariable() String userId){
         return ResultUtil.success(userInfoService.checkUserIdExist(userId));
+    }
+
+    @GetMapping("getCurrentUser")
+    public Object getCurrentUser(){
+        return ResultUtil.success(UserHolder.getCurrentUser());
     }
 
 }
