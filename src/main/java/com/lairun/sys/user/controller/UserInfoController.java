@@ -51,7 +51,7 @@ public class UserInfoController {
         if (userIds.size() < 1) {
             ResultUtil.success();
         }
-        userInfoService.deleteUserInfo(userIds.toArray(new String[0]));
+        userInfoService.deleteUserInfo(userIds);
         return ResultUtil.success();
     }
 

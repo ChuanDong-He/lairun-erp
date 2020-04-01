@@ -23,6 +23,6 @@ public interface UserInfoMapper {
 
     int editUserInfo(@Param("userInfo") UserInfoDetail userInfo, @Param("updatedUser") String updatedUser);
 
-    int deleteUserInfo(@Param("userIds") String[] userIds, @Param("updatedUser") String updatedUser);
+    int deleteUserInfo(@Param("userIds") List<String> userIds, @Param("updatedUser") String updatedUser);
 
 }

@@ -2,6 +2,7 @@ package com.lairun.sys.user.service.impl;
 
 import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
+import com.lairun.common.utils.UserHolder;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.domain.UserInfo;
 import com.lairun.sys.user.mapper.UserInfoMapper;
@@ -9,6 +10,8 @@ import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author x_holic@outlook.com
@@ -39,7 +42,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void addUserInfo(UserInfoDetail userInfo) {
-        userInfoMapper.addUserInfo(userInfo, "admin");
+        userInfoMapper.addUserInfo(userInfo, UserHolder.getCurrentUserId());
     }
 
     @Override
@@ -49,12 +52,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void editUserInfo(UserInfoDetail userInfo) {
-        userInfoMapper.editUserInfo(userInfo, "admin");
+        userInfoMapper.editUserInfo(userInfo, UserHolder.getCurrentUserId());
     }
 
     @Override
-    public void deleteUserInfo(String ...userIds) {
-        userInfoMapper.deleteUserInfo(userIds, "admin");
+    public void deleteUserInfo(List<String> userIds) {
+        userInfoMapper.deleteUserInfo(userIds, UserHolder.getCurrentUserId());
     }
 
     @Override

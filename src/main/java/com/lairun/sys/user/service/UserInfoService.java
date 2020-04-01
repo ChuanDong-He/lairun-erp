@@ -5,6 +5,8 @@ import com.lairun.common.domain.PageParam;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.domain.UserInfo;
 
+import java.util.List;
+
 /**
  * @author x_holic@outlook.com
  * @date 2019-12-13
@@ -21,7 +23,7 @@ public interface UserInfoService {
 
     void editUserInfo(UserInfoDetail userInfo);
 
-    void deleteUserInfo(String ...userId);
+    void deleteUserInfo(List<String> userIds);
 
     boolean checkUserIdExist(String userId);
 
