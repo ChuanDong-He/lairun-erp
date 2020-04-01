@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author x_holic@outlook.com
@@ -43,8 +46,12 @@ public class UserInfoController {
     }
 
     @PostMapping("deleteUserInfo")
-    public Object deleteUserInfo(@RequestBody @Valid @Size(min = 1, message = "参数错误") String[] userIds){
-        userInfoService.deleteUserInfo(userIds);
+    public Object deleteUserInfo(@RequestBody @Valid @Size(min = 1, message = "参数错误") List<String> userIds){
+        userIds.removeIf("admin"::equals);
+        if (userIds.size() < 1) {
+            ResultUtil.success();
+        }
+        userInfoService.deleteUserInfo(userIds.toArray(new String[0]));
         return ResultUtil.success();
     }
 

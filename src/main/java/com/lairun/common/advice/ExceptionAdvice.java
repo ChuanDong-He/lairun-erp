@@ -44,7 +44,7 @@ public class ExceptionAdvice {
 	@ExceptionHandler(value = { HttpMediaTypeNotSupportedException.class })
 	@ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public Map<String, Object> httpMediaTypeNotSupportedException() {
-		return ResultUtil.failure("415", "Unsupported Media Type");
+		return ResultUtil.failure("415", "不支持的媒体类型");
 	}
 
 	@ExceptionHandler(value = { UserNotLoginException.class })
