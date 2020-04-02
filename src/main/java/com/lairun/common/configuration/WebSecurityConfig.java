@@ -72,6 +72,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	static final class WebPasswordEncoder implements PasswordEncoder {
+		private static final PasswordEncoder INSTANCE = new WebPasswordEncoder();
+
+		public static PasswordEncoder getInstance() {
+			return INSTANCE;
+		}
 
 		@Override
 		public String encode(CharSequence rawPassword) {
@@ -81,15 +86,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		@Override
 		public boolean matches(CharSequence rawPassword, String encodedPassword) {
 			return rawPassword.toString().equals(encodedPassword);
-		}
-
-		public static PasswordEncoder getInstance() {
-			return INSTANCE;
-		}
-
-		private static final PasswordEncoder INSTANCE = new WebPasswordEncoder();
-
-		private WebPasswordEncoder() {
 		}
 
 	}

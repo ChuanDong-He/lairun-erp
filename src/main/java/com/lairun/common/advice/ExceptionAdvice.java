@@ -1,6 +1,6 @@
 package com.lairun.common.advice;
 
-import com.lairun.common.advice.exception.UserNotLoginException;
+import com.lairun.common.exception.UserNotFoundException;
 import com.lairun.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,7 @@ public class ExceptionAdvice {
 		return ResultUtil.failure("415", "不支持的媒体类型");
 	}
 
-	@ExceptionHandler(value = { UserNotLoginException.class })
+	@ExceptionHandler(value = { UserNotFoundException.class })
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public Map<String, Object> userNotLoginException() {
 		return ResultUtil.failure("401", "用户未登录");
