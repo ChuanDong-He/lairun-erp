@@ -3,8 +3,9 @@ package com.lairun.sys.user.service.impl;
 import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
 import com.lairun.common.utils.UserHolder;
-import com.lairun.sys.user.domain.UserInfoDetail;
+import com.lairun.sys.user.domain.ResetPassword;
 import com.lairun.sys.user.domain.UserInfo;
+import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.mapper.UserInfoMapper;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void resetUserPassword(String userId, String password) {
-
+    public void resetUserPassword(ResetPassword resetPassword) {
+        userInfoMapper.resetPassword(resetPassword, UserHolder.getCurrentUserId());
     }
 
     @Override

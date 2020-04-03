@@ -2,8 +2,9 @@ package com.lairun.sys.user.service;
 
 import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
-import com.lairun.sys.user.domain.UserInfoDetail;
+import com.lairun.sys.user.domain.ResetPassword;
 import com.lairun.sys.user.domain.UserInfo;
+import com.lairun.sys.user.domain.UserInfoDetail;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface UserInfoService {
 
     void addUserInfo(UserInfoDetail userInfoDetail);
 
-    void resetUserPassword(String userId, String password);
+    void resetUserPassword(ResetPassword resetPassword);
 
     void editUserInfo(UserInfoDetail userInfo);
 

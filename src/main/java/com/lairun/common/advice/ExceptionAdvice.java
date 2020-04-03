@@ -5,6 +5,7 @@ import com.lairun.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,7 +24,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-	@ExceptionHandler(value = { ConstraintViolationException.class })
+	@ExceptionHandler(value = { ConstraintViolationException.class, MethodArgumentNotValidException.class })
 	@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
 	public Map<String, Object> validException(Exception e) {
 		log.error("请求参数异常", e);
@@ -31,6 +32,9 @@ public class ExceptionAdvice {
 		if (e instanceof ConstraintViolationException) {
 			((ConstraintViolationException) e).getConstraintViolations()
 					.forEach(constraintViolation -> msg.add(constraintViolation.getMessage()));
+		} else if (e instanceof MethodArgumentNotValidException) {
+			((MethodArgumentNotValidException) e).getBindingResult().getAllErrors()
+					.forEach(objectError -> msg.add(objectError.getDefaultMessage()));
 		}
 		return ResultUtil.failure("406", String.join(",", msg));
 	}
@@ -38,7 +42,7 @@ public class ExceptionAdvice {
 	@ExceptionHandler(value = { NoHandlerFoundException.class })
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public Map<String, Object> notFoundException() {
-		return ResultUtil.failure("404", "请求不存在");
+		return ResultUtil.failure("404", "请求资源不存在");
 	}
 
 	@ExceptionHandler(value = { HttpMediaTypeNotSupportedException.class })

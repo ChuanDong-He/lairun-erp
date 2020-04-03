@@ -2,8 +2,9 @@ package com.lairun.sys.user.mapper;
 
 import com.lairun.common.annotation.PageHelper;
 import com.lairun.common.domain.PageParam;
-import com.lairun.sys.user.domain.UserInfoDetail;
+import com.lairun.sys.user.domain.ResetPassword;
 import com.lairun.sys.user.domain.UserInfo;
+import com.lairun.sys.user.domain.UserInfoDetail;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,5 +25,7 @@ public interface UserInfoMapper {
     int editUserInfo(@Param("userInfo") UserInfoDetail userInfo, @Param("updatedUser") String updatedUser);
 
     int deleteUserInfo(@Param("userIds") List<String> userIds, @Param("updatedUser") String updatedUser);
+
+    int resetPassword(@Param("resetPassword") ResetPassword resetPassword, @Param("updatedUser") String updatedUser);
 
 }

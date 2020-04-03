@@ -3,16 +3,15 @@ package com.lairun.sys.user.controller;
 import com.lairun.common.domain.PageParam;
 import com.lairun.common.utils.ResultUtil;
 import com.lairun.common.utils.UserHolder;
+import com.lairun.sys.user.domain.ResetPassword;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,6 +67,12 @@ public class UserInfoController {
     @GetMapping("getCurrentUser")
     public Object getCurrentUser(){
         return ResultUtil.success(UserHolder.getCurrentUser());
+    }
+
+    @PostMapping("resetPassword")
+    public Object resetPassword(@RequestBody @Valid ResetPassword resetPassword){
+        userInfoService.resetUserPassword(resetPassword);
+        return ResultUtil.success();
     }
 
 }

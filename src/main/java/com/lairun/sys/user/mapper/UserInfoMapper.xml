@@ -26,9 +26,12 @@
 
     <update id="deleteUserInfo">
         update sys_user_info
-        set status = '10D'
+        set status = '10D', updated_user = #{updatedUser}
         where user_id in <foreach open="(" close=")" separator="," item="userId" collection="userIds" > #{userId} </foreach>
-          and updated_user = #{updatedUser};
+    </update>
+
+    <update id="resetPassword">
+        update sys_user_info set password = #{resetPassword.password}, updated_user = #{updatedUser} where user_id = #{resetPassword.userId}
     </update>
 
     <resultMap id="UserInfoDetail" type="com.lairun.sys.user.domain.UserInfoDetail" extends="UserInfo">
