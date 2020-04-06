@@ -37,7 +37,7 @@ public class UserInfoController {
     @PostMapping("addUserInfo")
     public Object addUserInfo(@RequestBody UserInfoDetail userInfoDetail){
         userInfoService.addUserInfo(userInfoDetail);
-        return ResultUtil.success();               
+        return ResultUtil.success();
     }
 
     @PostMapping("editUserInfo")

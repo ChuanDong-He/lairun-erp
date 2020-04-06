@@ -2,10 +2,7 @@ package com.lairun.sys.role.service;
 
 import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
-import com.lairun.sys.role.domain.MenuTreeInfo;
-import com.lairun.sys.role.domain.RoleInfo;
-import com.lairun.sys.role.domain.RoleMenuPermissionInfo;
-import com.lairun.sys.role.domain.RolePermission;
+import com.lairun.sys.role.domain.*;
 
 import java.util.List;
 
@@ -29,4 +26,6 @@ public interface RoleInfoService {
     RoleMenuPermissionInfo queryRoleMenuPermission(String roleId);
 
     void saveRolePermission(RolePermission rolePermission);
+
+    List<RoleAttrPermissionInfo> queryRoleAttrPermission(String roleId);
 }

@@ -1,5 +1,6 @@
 package com.lairun.sys.role.domain;
 
+import com.lairun.common.annotation.AdminRoleValid;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import java.util.List;
 public class RolePermission {
 
     @NotBlank(message = "角色ID不能为空")
+    @AdminRoleValid(message = "系统管理员角色无需配置权限")
     private String roleId;
 
     @NotNull(message = "菜单权限不能为空")

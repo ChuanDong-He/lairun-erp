@@ -47,4 +47,24 @@
         select permission_id from sys_role_permission_rel where type = 'MENU' and role_id = #{roleId}
     </select>
 
+    <select id="queryAttrInfo" resultType="com.lairun.sys.role.domain.AttrInfo">
+        select attribute_id "attrId", attribute_desc "name", target
+        from sys_attribute_info
+        where target = #{target} and status = '10A'
+    </select>
+
+    <select id="queryRoleAttrPermissionKey" resultType="java.lang.Integer">
+        select srpr.permission_id
+        from sys_role_permission_rel srpr, sys_attribute_info sai
+        where srpr.role_id = #{roleId}
+          and srpr.type = 'ATTR'
+          and sai.attribute_id = srpr.permission_id
+          and sai.target = #{target}
+          and sai.status = '10A'
+    </select>
+
+    <select id="queryRoleAttrTarget" resultType="java.lang.String">
+        select distinct target from sys_attribute_info where status = '10A'
+    </select>
+
 </mapper>

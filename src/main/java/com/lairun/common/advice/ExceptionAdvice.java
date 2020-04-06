@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-	@ExceptionHandler(value = { ConstraintViolationException.class, MethodArgumentNotValidException.class })
+	@ExceptionHandler(value = { ConstraintViolationException.class, MethodArgumentNotValidException.class})
 	@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
 	public Map<String, Object> validException(Exception e) {
 		log.error("请求参数异常", e);
@@ -37,6 +38,7 @@ public class ExceptionAdvice {
 			((MethodArgumentNotValidException) e).getBindingResult().getAllErrors()
 					.forEach(objectError -> msg.add(objectError.getDefaultMessage()));
 		}
+
 		return ResultUtil.failure("406", String.join(",", msg));
 	}
 
