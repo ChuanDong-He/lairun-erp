@@ -1,5 +1,6 @@
 package com.lairun.common.advice;
 
+import com.lairun.common.exception.DeleteDataException;
 import com.lairun.common.exception.UserNotFoundException;
 import com.lairun.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,12 @@ public class ExceptionAdvice {
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	public Map<String, Object> userNotLoginException() {
 		return ResultUtil.failure("401", "用户未登录");
+	}
+
+	@ExceptionHandler(value = { DeleteDataException.class })
+	@ResponseStatus(code = HttpStatus.PRECONDITION_FAILED)
+	public Map<String, Object> deleteDataException(DeleteDataException e) {
+		return ResultUtil.failure("412", e.getMessage());
 	}
 
 	@ExceptionHandler(value = { Exception.class })

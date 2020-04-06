@@ -1,9 +1,11 @@
 package com.lairun.sys.user.controller;
 
+import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
 import com.lairun.common.utils.ResultUtil;
 import com.lairun.common.utils.UserHolder;
 import com.lairun.sys.user.domain.ResetPassword;
+import com.lairun.sys.user.domain.UserInfo;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class UserInfoController {
 
     @PostMapping("deleteUserInfo")
     public Object deleteUserInfo(@RequestBody @Valid @Size(min = 1, message = "参数错误") List<String> userIds){
-        userIds.removeIf("admin"::equals);
+        userIds.removeIf(UserHolder.getCurrentUserId()::equals);
         if (userIds.size() < 1) {
             ResultUtil.success();
         }

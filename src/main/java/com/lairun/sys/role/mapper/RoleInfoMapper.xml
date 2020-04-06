@@ -2,10 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lairun.sys.role.mapper.RoleInfoMapper">
 
+    <update id="deleteRoleInfo">
+        update sys_role_info set status = '10D'
+        where updated_user = #{updatedUser}
+          and status = '10A'
+          and role_id in <foreach collection="roleIds" open="(" separator="," close=")" item="roleId">#{roleId}</foreach>
+    </update>
+
+    <update id="saveRolePermission">
+        delete from sys_role_permission_rel where role_id = #{rolePermission.roleId};
+        insert into sys_role_permission_rel (role_id, permission_id, type)
+        <foreach collection="rolePermission.menuPermission" item="permissionId" separator="union all">
+           select #{rolePermission.roleId}, #{permissionId}, 'MENU'
+        </foreach>;
+    </update>
+
     <select id="queryRoleInfos" resultType="com.lairun.sys.role.domain.RoleInfo">
-        select sri.role_id "roleId", sri.role_name "roleName", sri.role_desc "roleDesc"
+        select sri.role_id "roleId", sri.role_name "roleName", sri.role_desc "roleDesc", sri.created_date "createdDate", sui.user_name "createdUser"
         from sys_role_info sri
+        left join sys_user_info sui on sri.created_user = sui.user_id
         where sri.status = '10A'
+          <if test="param.roleName != null and param.roleName != ''">
+              and sri.role_name like concat('%', #{param.roleName}, '%')
+          </if>
+        order by sri.created_date desc
+    </select>
+
+    <select id="isAssociatedRoleName" resultType="java.lang.String">
+        select sri.role_name
+        from sys_role_info sri, sys_user_role_rel surr
+        where sri.status = '10A'
+          and sri.role_id = surr.role_id
+          and sri.role_id in <foreach collection="roleIds" open="(" separator="," close=")" item="roleId">#{roleId}</foreach>
+    </select>
+
+    <select id="queryMenuInfo" resultType="com.lairun.sys.role.domain.MenuTreeInfo">
+        select smi.menu_id "key", smi.name "title", smi.up_menu_id "upKey"
+        from sys_menu_info smi
+        where smi.status = '10A'
+        order by smi.tree_leve, smi.order
+    </select>
+
+    <select id="queryRoleMenuPermissionKey" resultType="java.lang.Integer">
+        select permission_id from sys_role_permission_rel where type = 'MENU' and role_id = #{roleId}
     </select>
 
 </mapper>

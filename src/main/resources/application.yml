@@ -13,7 +13,8 @@ spring:
       test-on-borrow: true
       test-while-idle: true
       test-on-return: true
-    url: jdbc:mysql://120.79.1.143:3306/db_erp_dev?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+#    url: jdbc:mysql://120.79.1.143:3306/db_erp_dev?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/db_erp_dev?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: wyt1027#S
@@ -27,8 +28,6 @@ spring:
   http:
     encoding:
       force-response: true
-#    date-format: yyyy-MM-dd HH:mm:ss
-#    time-zone: GMT+8
 logging:
   level:
     com: debug

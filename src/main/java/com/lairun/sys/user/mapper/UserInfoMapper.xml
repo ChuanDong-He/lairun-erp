@@ -66,6 +66,8 @@
         <result property="telephoneNumber" column="telephoneNumber"/>
         <result property="faxNumber" column="faxNumber"/>
         <result property="email" column="email"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="createdUser" column="createdUser"/>
         <collection property="roles" ofType="com.lairun.sys.role.domain.RoleInfo">
             <result property="roleId" column="roleId"/>
             <result property="roleName" column="roleName"/>
@@ -82,10 +84,13 @@
                sui.email,
                sri.role_id          "roleId",
                sri.role_name        "roleName",
-               sri.role_desc        "roleDesc"
+               sri.role_desc        "roleDesc",
+               sui.created_date     "createdDate",
+               sui2.user_name       "createdUser"
         from sys_user_info sui
                  left join sys_user_role_rel surr on sui.user_id = surr.user_id
                  left join sys_role_info sri on surr.role_id = sri.role_id
+                 left join sys_user_info sui2 on sui.created_user = sui2.user_id
         where sui.status != '10D'
         <if test="param.userId != null and param.userId != ''">
             and sui.user_id like concat('%', #{param.userId}, '%')
@@ -93,6 +98,7 @@
         <if test="param.userName != null and param.userName != ''">
             and sui.user_name like concat('%', #{param.userName}, '%')
         </if>
+        order by sui.created_date desc
     </select>
 
 </mapper>
