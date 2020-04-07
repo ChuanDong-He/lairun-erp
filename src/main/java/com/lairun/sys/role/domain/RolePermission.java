@@ -23,4 +23,6 @@ public class RolePermission {
     @Size(min = 1, message = "菜单权限不能为空")
     private List<Integer> menuPermission;
 
+    private List<Integer> attrs;
+
 }

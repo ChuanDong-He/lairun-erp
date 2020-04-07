@@ -15,6 +15,12 @@
         <foreach collection="rolePermission.menuPermission" item="permissionId" separator="union all">
            select #{rolePermission.roleId}, #{permissionId}, 'MENU'
         </foreach>;
+        <if test="rolePermission.attrs.size() > 0">
+            insert into sys_role_permission_rel (role_id, permission_id, type)
+            <foreach collection="rolePermission.attrs" item="attrId" separator="union all">
+               select #{rolePermission.roleId}, #{attrId}, 'ATTR'
+            </foreach>;
+        </if>
     </update>
 
     <select id="queryRoleInfos" resultType="com.lairun.sys.role.domain.RoleInfo">
