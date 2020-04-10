@@ -1,11 +1,9 @@
 package com.lairun.sys.user.controller;
 
-import com.lairun.common.domain.PageBean;
 import com.lairun.common.domain.PageParam;
 import com.lairun.common.utils.ResultUtil;
 import com.lairun.common.utils.UserHolder;
 import com.lairun.sys.user.domain.ResetPassword;
-import com.lairun.sys.user.domain.UserInfo;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,6 @@ public class UserInfoController {
 
     @PostMapping("queryUserInfos")
     public Object queryUserInfos(@RequestBody @Valid PageParam pageParam){
-        //int i = 1/0;
         return ResultUtil.success(userInfoService.queryUserInfos(pageParam));
     }
 
