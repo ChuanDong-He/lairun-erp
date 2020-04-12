@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50619
 File Encoding         : 65001
 
-Date: 2020-04-07 00:22:34
+Date: 2020-04-12 12:50:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -93,6 +93,28 @@ INSERT INTO `sys_menu_info` VALUES ('11', '10', '用户信息', null, null, null
 INSERT INTO `sys_menu_info` VALUES ('12', '10', '角色信息', null, null, null, '2', '2', '10A');
 
 -- ----------------------------
+-- Table structure for sys_operation_info
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_operation_info`;
+CREATE TABLE `sys_operation_info` (
+  `operation_id` int(11) NOT NULL,
+  `operation_code` varchar(255) DEFAULT NULL,
+  `operation_desc` varchar(255) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `target` varchar(255) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `status` varchar(3) DEFAULT '10A',
+  PRIMARY KEY (`operation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of sys_operation_info
+-- ----------------------------
+INSERT INTO `sys_operation_info` VALUES ('1', null, '库存修改', null, '产品信息', '1', '10A');
+INSERT INTO `sys_operation_info` VALUES ('2', null, '价格', null, '产品信息', '2', '10A');
+INSERT INTO `sys_operation_info` VALUES ('3', null, '入库', null, '采购订单/入库信息', '1', '10A');
+
+-- ----------------------------
 -- Table structure for sys_role_info
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_info`;
@@ -139,18 +161,17 @@ INSERT INTO `sys_role_permission_rel` VALUES ('ADMIN', '9', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('ADMIN', '10', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('ADMIN', '11', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('ADMIN', '12', 'MENU');
-INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '3', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '4', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '5', 'MENU');
-INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '6', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '7', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '8', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '9', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '1', 'MENU');
 INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '2', 'MENU');
-INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '10', 'MENU');
-INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '11', 'MENU');
-INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '12', 'MENU');
+INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '5', 'ATTR');
+INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '7', 'ATTR');
+INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '2', 'OPERATION');
+INSERT INTO `sys_role_permission_rel` VALUES ('NORMAL', '3', 'OPERATION');
 
 -- ----------------------------
 -- Table structure for sys_user_info
