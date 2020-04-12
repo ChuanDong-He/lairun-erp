@@ -94,4 +94,14 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 						.setRoleAttrPermissionKeys(roleInfoMapper.queryRoleAttrPermissionKey(target, roleId))));
 		return result;
 	}
+
+	@Override
+	public List<RoleOperationPermissionInfo> queryRoleOperationPermission(String roleId) {
+		List<RoleOperationPermissionInfo> result = new ArrayList<>();
+		List<String> targets = roleInfoMapper.queryRoleOperationTarget();
+		targets.forEach(target -> result
+				.add(new RoleOperationPermissionInfo().setTarget(target).setOperationInfos(roleInfoMapper.queryOperationInfo(target))
+						.setRoleOperationPermissionKeys(roleInfoMapper.queryRoleOperationPermissionKey(target, roleId))));
+		return result;
+	}
 }

@@ -25,4 +25,6 @@ public class RolePermission {
 
     private List<Integer> attrs;
 
+    private List<Integer> operations;
+
 }

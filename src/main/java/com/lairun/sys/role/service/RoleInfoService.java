@@ -28,4 +28,6 @@ public interface RoleInfoService {
     void saveRolePermission(RolePermission rolePermission);
 
     List<RoleAttrPermissionInfo> queryRoleAttrPermission(String roleId);
+
+    List<RoleOperationPermissionInfo> queryRoleOperationPermission(String roleId);
 }

@@ -2,10 +2,7 @@ package com.lairun.sys.role.mapper;
 
 import com.lairun.common.annotation.PageHelper;
 import com.lairun.common.domain.PageParam;
-import com.lairun.sys.role.domain.AttrInfo;
-import com.lairun.sys.role.domain.MenuTreeInfo;
-import com.lairun.sys.role.domain.RoleInfo;
-import com.lairun.sys.role.domain.RolePermission;
+import com.lairun.sys.role.domain.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,8 +28,14 @@ public interface RoleInfoMapper {
 
 	List<AttrInfo> queryAttrInfo(@Param("target") String target);
 
+	List<OperationInfo> queryOperationInfo(@Param("target") String target);
+
 	List<Integer> queryRoleAttrPermissionKey(@Param("target") String target, @Param("roleId") String roleId);
 
+	List<Integer> queryRoleOperationPermissionKey(@Param("target") String target, @Param("roleId") String roleId);
+
 	List<String> queryRoleAttrTarget();
+
+	List<String> queryRoleOperationTarget();
 
 }

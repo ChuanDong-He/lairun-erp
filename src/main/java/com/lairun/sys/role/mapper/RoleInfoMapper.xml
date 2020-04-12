@@ -6,7 +6,8 @@
         update sys_role_info set status = '10D'
         where updated_user = #{updatedUser}
           and status = '10A'
-          and role_id in <foreach collection="roleIds" open="(" separator="," close=")" item="roleId">#{roleId}</foreach>
+          and role_id in <foreach collection="roleIds" open="(" separator="," close=")"
+                                  item="roleId">#{roleId}</foreach>
     </update>
 
     <update id="saveRolePermission">
@@ -19,6 +20,12 @@
             insert into sys_role_permission_rel (role_id, permission_id, type)
             <foreach collection="rolePermission.attrs" item="attrId" separator="union all">
                select #{rolePermission.roleId}, #{attrId}, 'ATTR'
+            </foreach>;
+        </if>
+        <if test="rolePermission.operations.size() > 0">
+            insert into sys_role_permission_rel (role_id, permission_id, type)
+            <foreach collection="rolePermission.operations" item="operationId" separator="union all">
+               select #{rolePermission.roleId}, #{operationId}, 'OPERATION'
             </foreach>;
         </if>
     </update>
@@ -39,7 +46,8 @@
         from sys_role_info sri, sys_user_role_rel surr
         where sri.status = '10A'
           and sri.role_id = surr.role_id
-          and sri.role_id in <foreach collection="roleIds" open="(" separator="," close=")" item="roleId">#{roleId}</foreach>
+          and sri.role_id in <foreach collection="roleIds" open="(" separator="," close=")"
+                                      item="roleId">#{roleId}</foreach>
     </select>
 
     <select id="queryMenuInfo" resultType="com.lairun.sys.role.domain.MenuTreeInfo">
@@ -50,18 +58,23 @@
     </select>
 
     <select id="queryRoleMenuPermissionKey" resultType="java.lang.Integer">
-        select permission_id from sys_role_permission_rel where type = 'MENU' and role_id = #{roleId}
+        select permission_id
+        from sys_role_permission_rel
+        where type = 'MENU'
+          and role_id = #{roleId}
     </select>
 
     <select id="queryAttrInfo" resultType="com.lairun.sys.role.domain.AttrInfo">
-        select attribute_id "attrId", attribute_desc "name", target
+        select attribute_id "attrId", attribute_desc "name"
         from sys_attribute_info
-        where target = #{target} and status = '10A'
+        where target = #{target}
+          and status = '10A'
     </select>
 
     <select id="queryRoleAttrPermissionKey" resultType="java.lang.Integer">
         select srpr.permission_id
-        from sys_role_permission_rel srpr, sys_attribute_info sai
+        from sys_role_permission_rel srpr,
+             sys_attribute_info sai
         where srpr.role_id = #{roleId}
           and srpr.type = 'ATTR'
           and sai.attribute_id = srpr.permission_id
@@ -69,8 +82,34 @@
           and sai.status = '10A'
     </select>
 
+    <select id="queryRoleOperationPermissionKey" resultType="java.lang.Integer">
+        select srpr.permission_id
+        from sys_role_permission_rel srpr,
+             sys_operation_info soi
+        where srpr.role_id = #{roleId}
+          and srpr.type = 'OPERATION'
+          and soi.operation_id = srpr.permission_id
+          and soi.target = #{target}
+          and soi.status = '10A'
+    </select>
+
     <select id="queryRoleAttrTarget" resultType="java.lang.String">
-        select distinct target from sys_attribute_info where status = '10A'
+        select distinct target
+        from sys_attribute_info
+        where status = '10A'
+    </select>
+
+    <select id="queryRoleOperationTarget" resultType="java.lang.String">
+        select distinct target
+        from sys_operation_info
+        where status = '10A'
+    </select>
+
+    <select id="queryOperationInfo" resultType="com.lairun.sys.role.domain.OperationInfo">
+        select operation_id "operationId", operation_desc "name"
+        from sys_operation_info
+        where target = #{target}
+          and status = '10A'
     </select>
 
 </mapper>

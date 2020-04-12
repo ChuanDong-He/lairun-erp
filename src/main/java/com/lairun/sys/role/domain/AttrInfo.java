@@ -12,6 +12,4 @@ public class AttrInfo {
     private Integer attrId;
 
     private String name;
-
-    private String attr;
 }

@@ -39,6 +39,11 @@ public class RoleInfoController {
         return ResultUtil.success(roleInfoService.queryRoleAttrPermission(roleId));
     }
 
+    @GetMapping("queryRoleOperationPermission/{roleId}")
+    public Object queryRoleOperationPermission(@PathVariable String roleId){
+        return ResultUtil.success(roleInfoService.queryRoleOperationPermission(roleId));
+    }
+
     @PostMapping("saveRolePermission")
     public Object saveRolePermission(@RequestBody @Valid RolePermission rolePermission){
         roleInfoService.saveRolePermission(rolePermission);
