@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50619
 File Encoding         : 65001
 
-Date: 2020-04-12 12:50:24
+Date: 2020-04-13 18:02:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -211,6 +211,20 @@ INSERT INTO `sys_user_info` VALUES ('test6', '测试账号', '123456', null, nul
 INSERT INTO `sys_user_info` VALUES ('test7', '测试账号', '123456', null, null, null, null, '10D', null, '2019-12-19 13:11:34', '2020-04-02 16:50:50', 'admin', 'admin');
 INSERT INTO `sys_user_info` VALUES ('test8', '测试账号', '123456', null, null, null, null, '10D', null, '2019-12-19 13:11:34', '2020-03-30 22:54:46', 'admin', 'admin');
 INSERT INTO `sys_user_info` VALUES ('test9', '测试账号', '123456', null, null, null, null, '10D', null, '2019-12-19 13:11:34', '2020-03-30 22:54:46', 'admin', 'admin');
+
+-- ----------------------------
+-- Table structure for sys_user_permission_rel
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_permission_rel`;
+CREATE TABLE `sys_user_permission_rel` (
+  `user_id` varchar(100) DEFAULT NULL,
+  `permission_id` int(11) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of sys_user_permission_rel
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_user_role_rel
