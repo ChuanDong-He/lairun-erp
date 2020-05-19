@@ -15,6 +15,8 @@ public interface RoleInfoService {
 
     PageBean<RoleInfo> queryRoleInfos(PageParam pageParam);
 
+    List<RoleInfo> queryAllRoleInfos();
+
     RoleInfo queryRoleInfo(String roleId);
 
     void deleteRoleInfo(List<String> roleIds);

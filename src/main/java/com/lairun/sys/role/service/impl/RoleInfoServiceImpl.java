@@ -29,6 +29,11 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 	}
 
 	@Override
+	public List<RoleInfo> queryAllRoleInfos() {
+		return roleInfoMapper.queryAllRoleInfos();
+	}
+
+	@Override
 	public RoleInfo queryRoleInfo(String roleId) {
 		return null;
 	}

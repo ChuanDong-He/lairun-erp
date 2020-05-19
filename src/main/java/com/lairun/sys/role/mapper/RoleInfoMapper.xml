@@ -41,6 +41,14 @@
         order by sri.created_date desc
     </select>
 
+    <select id="queryAllRoleInfos" resultType="com.lairun.sys.role.domain.RoleInfo">
+        select sri.role_id "roleId", sri.role_name "roleName", sri.role_desc "roleDesc", sri.created_date "createdDate", sui.user_name "createdUser"
+        from sys_role_info sri
+        left join sys_user_info sui on sri.created_user = sui.user_id
+        where sri.status = '10A'
+        order by sri.created_date desc
+    </select>
+
     <select id="isAssociatedRoleName" resultType="java.lang.String">
         select sri.role_name
         from sys_role_info sri, sys_user_role_rel surr

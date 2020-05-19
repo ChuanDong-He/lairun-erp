@@ -29,6 +29,11 @@ public class RoleInfoController {
         return ResultUtil.success(roleInfoService.queryRoleInfos(pageParam));
     }
 
+    @GetMapping("list")
+    public Object queryAllRoleInfos(){
+        return ResultUtil.success(roleInfoService.queryAllRoleInfos());
+    }
+
     @GetMapping("queryRoleMenuPermission/{roleId}")
     public Object queryRoleMenuPermission(@PathVariable String roleId){
         return ResultUtil.success(roleInfoService.queryRoleMenuPermission(roleId));

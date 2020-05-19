@@ -16,6 +16,8 @@ public interface RoleInfoMapper {
 	@PageHelper
 	List<RoleInfo> queryRoleInfos(PageParam pageParam);
 
+	List<RoleInfo> queryAllRoleInfos();
+
 	int deleteRoleInfo(@Param("roleIds") List<String> roleIds, @Param("updatedUser") String updatedUser);
 
 	List<String> isAssociatedRoleName(@Param("roleIds") List<String> roleIds);
