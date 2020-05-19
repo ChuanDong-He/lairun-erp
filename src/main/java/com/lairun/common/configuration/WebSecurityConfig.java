@@ -2,19 +2,17 @@ package com.lairun.common.configuration;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lairun.common.utils.ResultUtil;
-import com.lairun.sys.user.service.UserInfoDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedHashMap;
 
 /**
  * @author x_holic@outlook.com
@@ -34,22 +31,22 @@ import java.util.LinkedHashMap;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private UserInfoDetailService userInfoDetailService;
+	private UserDetailsService userDetailsService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().anyRequest().authenticated().and().formLogin().usernameParameter("userName")
-				.successHandler(new LoginSuccessHandler()).failureHandler(new LoginFailureHandler()).permitAll().and()
+				.successHandler(new LoginSuccessHandler()).failureHandler(new LoginFailureHandler()).and()
 				.httpBasic().and().exceptionHandling().accessDeniedHandler(new WebAccessDeniedHandler())
 				.authenticationEntryPoint(new WebAuthenticationEntryPoint());
 		//http.authorizeRequests().accessDecisionManager(accessDecisionManager());
-		http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+		/*http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 			@Override
 			public <O extends FilterSecurityInterceptor> O postProcess(O filterSecurityInterceptor) {
 				filterSecurityInterceptor.setSecurityMetadataSource(new DefaultFilterInvocationSecurityMetadataSource(new LinkedHashMap<>()));
 				return filterSecurityInterceptor;
 			}
-		});
+		});*/
 		http.csrf().disable();
 		//http.authorizeRequests().withObjectPostProcessor()
 
@@ -62,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userInfoDetailService);
+		auth.userDetailsService(userDetailsService);
 
 	}
 
@@ -94,7 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		@Override
 		public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 				Authentication authentication) throws IOException, ServletException {
-			response.setContentType("application/json;charset=utf-8");
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			PrintWriter out = response.getWriter();
 			out.write(JSONObject.toJSONString(ResultUtil.success("登录成功", null)));
 			out.flush();
@@ -106,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		@Override
 		public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 				AuthenticationException exception) throws IOException, ServletException {
-			response.setContentType("application/json;charset=utf-8");
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			PrintWriter out = response.getWriter();
 			out.write(JSONObject.toJSONString(ResultUtil.failure("401", "用户名或密码错误")));

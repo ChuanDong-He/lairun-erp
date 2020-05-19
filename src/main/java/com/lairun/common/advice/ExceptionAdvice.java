@@ -5,7 +5,9 @@ import com.lairun.common.exception.UserNotFoundException;
 import com.lairun.common.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-	@ExceptionHandler(value = { ConstraintViolationException.class, MethodArgumentNotValidException.class})
+	@ExceptionHandler(value = { ConstraintViolationException.class, MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
 	@ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
 	public Map<String, Object> validException(Exception e) {
 		log.error("请求参数异常", e);
@@ -37,6 +38,8 @@ public class ExceptionAdvice {
 		} else if (e instanceof MethodArgumentNotValidException) {
 			((MethodArgumentNotValidException) e).getBindingResult().getAllErrors()
 					.forEach(objectError -> msg.add(objectError.getDefaultMessage()));
+		} else if (e instanceof HttpMessageNotReadableException) {
+			return ResultUtil.failure("406", "请求参数错误");
 		}
 
 		return ResultUtil.failure("406", String.join(",", msg));
@@ -52,6 +55,12 @@ public class ExceptionAdvice {
 	@ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public Map<String, Object> httpMediaTypeNotSupportedException() {
 		return ResultUtil.failure("415", "不支持的媒体类型");
+	}
+
+	@ExceptionHandler(value = { HttpRequestMethodNotSupportedException.class })
+	@ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
+	public Map<String, Object> httpRequestMethodNotSupportedException() {
+		return ResultUtil.failure("405", "请求方法错误");
 	}
 
 	@ExceptionHandler(value = { UserNotFoundException.class })

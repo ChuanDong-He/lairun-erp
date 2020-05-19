@@ -1,12 +1,14 @@
 package com.lairun.sys.user.controller;
 
 import com.lairun.common.domain.PageParam;
+import com.lairun.common.exception.DeleteDataException;
 import com.lairun.common.utils.ResultUtil;
 import com.lairun.common.utils.UserHolder;
 import com.lairun.sys.user.domain.ResetPassword;
 import com.lairun.sys.user.domain.UserInfoDetail;
 import com.lairun.sys.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +22,13 @@ import java.util.List;
  */
 @Validated
 @RestController
-@RequestMapping("userInfo")
+@RequestMapping(value = "userInfo", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
 
-    @PostMapping("queryUserInfos")
+    @PostMapping(value = "queryUserInfos", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object queryUserInfos(@RequestBody @Valid PageParam pageParam){
         return ResultUtil.success(userInfoService.queryUserInfos(pageParam));
     }
@@ -45,9 +47,8 @@ public class UserInfoController {
 
     @PostMapping("deleteUserInfo")
     public Object deleteUserInfo(@RequestBody @Valid @Size(min = 1, message = "参数错误") List<String> userIds){
-        userIds.removeIf(UserHolder.getCurrentUserId()::equals);
-        if (userIds.size() < 1) {
-            ResultUtil.success();
+        if (userIds.contains(UserHolder.getCurrentUserId())) {
+            throw new DeleteDataException("含有当前登录用户，无法删除");
         }
         userInfoService.deleteUserInfo(userIds);
         return ResultUtil.success();
